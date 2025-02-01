@@ -172,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
       onTap: () {
         // Navigate to register page
       },
-      child: Container(
+      child: Container( 
         height: _deviceHeight * 0.06,
         width: _deviceWidth,
         child: Text(
