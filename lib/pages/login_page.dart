@@ -36,6 +36,8 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           _headingWidget(),
           _inputForm(),
+          _loginButton(),
+          _registerButton()
         ],
       ),
     );
@@ -80,7 +82,6 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             _emailTextField(),
             _passwordTextField(),
-            _loginButton(),
           ],
         ),
       ),
@@ -141,15 +142,49 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
   Widget _loginButton() {
-    return ElevatedButton(
-      onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          _formKey.currentState!.save();
-          // Perform login logic
-        }
+    return Container(
+      height:_deviceHeight*0.06,
+      width: _deviceWidth,
+      child: MaterialButton(
+        onPressed: (){
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+            // Perform login logic
+          }
+        },
+        color: Colors.blue,
+        child: Text(
+          "Login",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w700
+          ),
+        ),
+    ),
+    );
+  }
+
+  Widget _registerButton() {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to register page
       },
-      child: Text("Login"),
+      child: Container(
+        height: _deviceHeight * 0.06,
+        width: _deviceWidth,
+        child: Text(
+            "Register",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+      ),
     );
   }
 }
