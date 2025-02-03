@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late String _email;
+  late String _password;
   late double _deviceHeight, _deviceWidth;
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +47,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _headingWidget() {
-    return Container(
+    return SizedBox(
       height: _deviceHeight * 0.12,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -71,10 +73,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _inputForm() {
-    return Container(
+    return SizedBox(
       height: _deviceHeight * 0.3,
       child: Form(
         key: _formKey,
+        onChanged: (){
+          _formKey.currentState!.save();
+        },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
@@ -92,17 +97,19 @@ class _LoginPageState extends State<LoginPage> {
     return TextFormField(
       autocorrect: false,
       style: TextStyle(color: Colors.white),
-      validator: (_input) {
-        if (_input!.isEmpty) {
+      validator: (input) {
+        if (input!.isEmpty) {
           return "Please enter your email";
         }
-        if (!_input.contains("@")) {
+        if (!input.contains("@")) {
           return "Please enter a valid email";
         }
         return null;
       },
       onSaved: (newValue) {
-        // Save email value
+        setState(() {
+          _email = newValue!;
+        });
       },
       cursorColor: Colors.white,
       decoration: InputDecoration(
@@ -121,14 +128,16 @@ class _LoginPageState extends State<LoginPage> {
       obscureText: true, // Hide password
       autocorrect: false,
       style: TextStyle(color: Colors.white),
-      validator: (_input) {
-        if (_input!.isEmpty) {
+      validator: (input) {
+        if (input!.isEmpty) {
           return "Please enter your password";
         }
         return null;
       },
       onSaved: (newValue) {
-        // Save password value
+        setState(() {
+          _password = newValue!;
+        });
       },
       cursorColor: Colors.white,
       decoration: InputDecoration(
@@ -144,14 +153,13 @@ class _LoginPageState extends State<LoginPage> {
 
 
   Widget _loginButton() {
-    return Container(
+    return SizedBox(
       height:_deviceHeight*0.06,
       width: _deviceWidth,
       child: MaterialButton(
         onPressed: (){
           if (_formKey.currentState!.validate()) {
             _formKey.currentState!.save();
-            // Perform login logic
           }
         },
         color: Colors.blue,
@@ -172,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
       onTap: () {
         // Navigate to register page
       },
-      child: Container( 
+      child: SizedBox( 
         height: _deviceHeight * 0.06,
         width: _deviceWidth,
         child: Text(
