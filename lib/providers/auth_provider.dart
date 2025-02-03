@@ -11,10 +11,13 @@ enum AuthStatus {
 
 class AuthProvider extends ChangeNotifier {
   AuthStatus status = AuthStatus.NotAuthenticated;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late final FirebaseAuth _auth;
   User? user;
-
-  AuthProvider();
+  
+  static AuthProvider instance = AuthProvider();
+  AuthProvider(){
+    _auth=FirebaseAuth.instance;
+  }
 
   Future<void> loginUserWithEmailAndPassword(String email, String password) async {
     status = AuthStatus.Authenticating;
